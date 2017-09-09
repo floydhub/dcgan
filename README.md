@@ -1,6 +1,6 @@
 # Deep Convolution Generative Adversarial Networks
 
-This example implements the paper [Unsupervised Representation Learning with Deep Convolutional Generative Adversarial Networks](http://arxiv.org/abs/1511.06434)
+This project implements the paper [Unsupervised Representation Learning with Deep Convolutional Generative Adversarial Networks](http://arxiv.org/abs/1511.06434) and is a porting from [pytorch/examples/dcgan](https://github.com/pytorch/examples/tree/master/dcgan)) to be usable on [FloydHub](https://www.floydhub.com/).
 
 The implementation is very close to the Torch implementation [dcgan.torch](https://github.com/soumith/dcgan.torch)
 
