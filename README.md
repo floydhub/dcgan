@@ -1,6 +1,6 @@
 # Deep Convolution Generative Adversarial Networks
 
-This project implements the paper [Unsupervised Representation Learning with Deep Convolutional Generative Adversarial Networks](http://arxiv.org/abs/1511.06434) and is a porting from [pytorch/examples/dcgan](https://github.com/pytorch/examples/tree/master/dcgan)) to be usable on [FloydHub](https://www.floydhub.com/).
+This project implements the paper [Unsupervised Representation Learning with Deep Convolutional Generative Adversarial Networks](http://arxiv.org/abs/1511.06434) and is a porting from [pytorch/examples/dcgan](https://github.com/pytorch/examples/tree/master/dcgan) to be usable on [FloydHub](https://www.floydhub.com/).
 
 The implementation is very close to the Torch implementation [dcgan.torch](https://github.com/soumith/dcgan.torch)
 
@@ -70,7 +70,7 @@ Before you start, log in on FloydHub with the [floyd login](http://docs.floydhub
 the project:
 
 ```bash
-$git clone https://github.com/floydhub/dcgan
+$ git clone https://github.com/floydhub/dcgan
 $ cd dcgan
 $ floyd init deep-text-corrector
 ```
@@ -90,7 +90,7 @@ Now it's time to run our training on FloydHub. In this example we will train the
 ```bash
 $ floyd run --gpu --env pytorch --data floydhub/datasets/lfw/1:lfw "python main.py --dataset lfw --dataroot /lfw --outf /output --cuda --ngpu 1 --niter 100
 ```
-You can follow along the progressby using the [logs](http://docs.floydhub.com/commands/logs/) command.
+You can follow along the progress by using the [logs](http://docs.floydhub.com/commands/logs/) command.
 The training should take about 2h!!
 
 ### Evaluating
@@ -123,7 +123,7 @@ floyd run --gpu --mode serve --env pytorch --data floydhub/dcgan/1/output:/model
 
 The above command will print out a service endpoint for this job in your terminal console.
 
-he service endpoint will take couple minutes to become ready. Once it's up, you can interact with the model by sending serialized Zvector file with a POST request or simply generate images from random noise:
+The service endpoint will take a couple minutes to become ready. Once it's up, you can interact with the model by sending serialized Z vector file with a POST request or simply generating images from random noise:
 
 ```bash
 # e.g. of a GET req
