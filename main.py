@@ -38,6 +38,7 @@ print(opt)
 
 try:
     os.makedirs(opt.outf)
+    # os.makedirs(opt.outf+"/model")
 except OSError:
     pass
 
@@ -189,6 +190,9 @@ criterion = nn.BCELoss()
 input = torch.FloatTensor(opt.batchSize, 3, opt.imageSize, opt.imageSize)
 noise = torch.FloatTensor(opt.batchSize, nz, 1, 1)
 fixed_noise = torch.FloatTensor(opt.batchSize, nz, 1, 1).normal_(0, 1)
+# Save fixed latent Z vector
+torch.save(fixed_noise, '%s/fixed_noise.pth' % (opt.outf))
+
 label = torch.FloatTensor(opt.batchSize)
 real_label = 1
 fake_label = 0
@@ -262,6 +266,6 @@ for epoch in range(opt.niter):
                     '%s/fake_samples_epoch_%03d.png' % (opt.outf, epoch),
                     normalize=True)
 
-    # do checkpointing
+    # do checkpointing - Are saved in outf/model/
     torch.save(netG.state_dict(), '%s/netG_epoch_%d.pth' % (opt.outf, epoch))
     torch.save(netD.state_dict(), '%s/netD_epoch_%d.pth' % (opt.outf, epoch))
