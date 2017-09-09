@@ -110,7 +110,6 @@ floyd run --gpu --env pytorch -data <REPLACE_WITH_JOB_OUTPUT_NAME> "python gener
 floyd run --gpu --env pytorch -data floydhub/dcgan/1/output:/model "python generator.py --netG /model/netG_epoch_99.pth"
 ```
 
-
 ### Serve model through REST API
 
 FloydHub supports seving mode for demo and testing purpose. Before serving your model through REST API,
@@ -140,3 +139,7 @@ Any job running in serving mode will stay up until it reaches maximum runtime. S
 once you are done testing, **remember to shutdown the job!**
 
 *Note that this feature is in preview mode and is not production ready yet*
+
+## Contributing
+
+For any questions, bug(even typos) and/or features requests do not hesitate to contact me or open an issue!
