@@ -7,7 +7,9 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+# Floyd things
 FLOYD_README.md
+.floydexpt
 
 # C extensions
 *.so
