@@ -7,7 +7,7 @@ from dcgan import DCGAN
 parser = argparse.ArgumentParser()
 parser.add_argument('--netG', required=True, default='', help="path to netG (for generating images)")
 parser.add_argument('--outf', default='/output', help='folder to output images')
-parser.add_argument('--Zvector', help="Path to Serialized Z vector")
+parser.add_argument('--Zvector', help="path to Serialized Z vector")
 opt = parser.parse_args()
 print(opt)
 

@@ -9,14 +9,17 @@ with the samples from the generative model.
 
 After every epoch, models are saved to: `netG_epoch_%d.pth` and `netD_epoch_%d.pth`
 
-## Downloading the dataset
+## Downloading the LSUN dataset
 You can download the LSUN dataset by cloning [this repo](https://github.com/fyu/lsun) and running
 ```
 python download.py -c bedroom
 ```
 
 ## Usage
-```
+
+Training script:
+
+```bash
 usage: main.py [-h] --dataset DATASET --dataroot DATAROOT [--workers WORKERS]
                [--batchSize BATCHSIZE] [--imageSize IMAGESIZE] [--nz NZ]
                [--ngf NGF] [--ndf NDF] [--niter NITER] [--lr LR]
@@ -43,3 +46,97 @@ optional arguments:
   --netG NETG           path to netG (to continue training)
   --netD NETD           path to netD (to continue training)
 ```
+
+Generating script:
+
+```bash
+usage: generate.py [-h] --netG NETG [--outf OUTF] [--Zvector ZVECTOR]
+
+optional arguments:
+  -h, --help         show this help message and exit
+  --netG NETG        path to netG (for generating images)
+  --outf OUTF        folder to output images
+  --Zvector ZVECTOR  Path to Serialized Z vector
+```
+
+
+## Run on FloydHub
+
+Follow the tutorial on the [FloydHub docs](http://docs.floydhub.com/examples/dcgan/) or follow the next steps:
+
+### Project Setup
+
+Before you start, log in on FloydHub with the [floyd login](http://docs.floydhub.com/commands/login/) command, then fork and init
+the project:
+
+```bash
+$git clone https://github.com/floydhub/dcgan
+$ cd dcgan
+$ floyd init deep-text-corrector
+```
+
+### Training
+
+This project support the following datasets which were used in the paper:
+- [LSUN](http://www.yf.io/p/lsun), coming soon on FloydHub Dataset, but you can download it following the above command
+- [CIFAR-10](https://www.cs.toronto.edu/~kriz/cifar.html), available on FloydHub [here](https://www.floydhub.com/search/datasets?query=cifar)
+- [ImageNet](http://www.image-net.org/), available on FloydHub [here](https://www.floydhub.com/search/datasets?query=imagenet)
+- [LFW](http://vis-www.cs.umass.edu/lfw/), available on FloydHub [here](https://www.floydhub.com/search/datasets?query=lfw)
+- Custom Image Dataset Folder, now it's your turn to make new experiments :)
+
+Now it's time to run our training on FloydHub. In this example we will train the model for 100 epochs with a gpu istance and with cuda enabled.
+**Note**: If you want to mount/create a dataset look at the [docs](http://docs.floydhub.com/guides/basics/create_new/#create-a-new-dataset).
+
+```bash
+$ floyd run --gpu --env pytorch --data floydhub/datasets/lfw/1:lfw "python main.py --dataset lfw --dataroot /lfw --outf /output --cuda --ngpu 1 --niter 100
+```
+You can follow along the progressby using the [logs](http://docs.floydhub.com/commands/logs/) command.
+The training should take about 2h!!
+
+### Evaluating
+
+It's time to evaluate our model generating some images:
+
+```bash
+floyd run --gpu --env pytorch -data <REPLACE_WITH_JOB_OUTPUT_NAME> "python generator.py --netG <REPLACE_WITH_MODEL_CHECKPOINT_PATH>"
+
+# Provide a serialized Zvector
+floyd run --gpu --env pytorch -data <REPLACE_WITH_JOB_OUTPUT_NAME> "python generator.py --netG <REPLACE_WITH_MODEL_CHECKPOINT_PATH> --Zvector <REPLACE_WITH_SERIALIZED_Z_VECTOR_PATH>"
+```
+
+### Try our pre-trained model
+
+```bash
+floyd run --gpu --env pytorch -data floydhub/dcgan/1/output:/model "python generator.py --netG /model/netG_epoch_99.pth"
+```
+
+
+### Serve model through REST API
+
+FloydHub supports seving mode for demo and testing purpose. Before serving your model through REST API,
+you need to create a `floyd_requirements.txt` and declare the flask requirement in it. If you run a job
+with `--mode serve` flag, FloydHub will run the `app.py` file in your project
+and attach it to a dynamic service endpoint:
+
+```bash
+floyd run --gpu --mode serve --env pytorch --data floydhub/dcgan/1/output:/model:model
+```
+
+The above command will print out a service endpoint for this job in your terminal console.
+
+he service endpoint will take couple minutes to become ready. Once it's up, you can interact with the model by sending serialized Zvector file with a POST request or simply generate images from random noise:
+
+```bash
+# e.g. of a GET req
+curl -X GET -o <NAME_&_PATH_DOWNLOADED_IMG> -F "ckp=<MODEL_CHECKPOINT>" <SERVICE_ENDPOINT>
+curl -X GET -o prova.png -F "ckp=netG_epoch_69.pth" https://www.floydhub.com/expose/hellllllllllllllo!!!!
+
+# e.g. of a POST req
+curl -X POST -o <NAME_&_PATH_DOWNLOADED_IMG> -F "file=@<ZVECTOR_SERIALIZED_PATH>" <SERVICE_ENDPOINT>
+curl -X POST -o prova.png -F "file=@./parameter/zvector.pth" https://www.floydhub.com/expose/hellllllllllllllo!!!!
+```
+
+Any job running in serving mode will stay up until it reaches maximum runtime. So
+once you are done testing, **remember to shutdown the job!**
+
+*Note that this feature is in preview mode and is not production ready yet*
