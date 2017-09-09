@@ -1,13 +1,13 @@
 
 # Created by https://www.gitignore.io/api/python
 
-FLOYD_README.md
-
 ### Python ###
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
 *$py.class
+
+FLOYD_README.md
 
 # C extensions
 *.so
