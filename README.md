@@ -68,7 +68,7 @@ optional arguments:
 
 ## DCGAN Architecture
 
-![DCGAN](images/dcgan.png)
+![DCGAN](images/DCGan.png)
 
 ## Run on FloydHub
 
