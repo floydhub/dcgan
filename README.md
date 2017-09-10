@@ -6,7 +6,7 @@ This project implements the paper [Unsupervised Representation Learning with Dee
 
 The implementation is very close to the Torch implementation [dcgan.torch](https://github.com/soumith/dcgan.torch).
 
-Before start, the `fixed_noise.pth` (serialized Z vector used for generating image on training) is saved in the outf folder.
+Before start, the `fixed_noise.pth` (serialized Z vector used for generating image on training) is saved in the `outf` folder.
 
 After every 100 training iterations, the files `real_samples.png` and `fake_samples.png` are written to disk
 with the samples from the generative model.
@@ -82,7 +82,7 @@ the project:
 ```bash
 $ git clone https://github.com/floydhub/dcgan
 $ cd dcgan
-$ floyd init deep-text-corrector
+$ floyd init dcgan
 ```
 
 ### Training
