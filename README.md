@@ -1,5 +1,7 @@
 # Deep Convolution Generative Adversarial Networks
 
+![Generated images from noise on LFW ds after 300 epochs](images/lfw-300epochs.gif)
+
 This project implements the paper [Unsupervised Representation Learning with Deep Convolutional Generative Adversarial Networks](http://arxiv.org/abs/1511.06434) from a porting of [pytorch/examples/dcgan](https://github.com/pytorch/examples/tree/master/dcgan) making it usables on [FloydHub](https://www.floydhub.com/).
 
 The implementation is very close to the Torch implementation [dcgan.torch](https://github.com/soumith/dcgan.torch).
@@ -64,6 +66,9 @@ optional arguments:
   --ngpu NGPU        number of GPUs to use
 ```
 
+## DCGAN Architecture
+
+![DCGAN](images/dcgan.png)
 
 ## Run on FloydHub
 
@@ -146,6 +151,15 @@ Any job running in serving mode will stay up until it reaches maximum runtime. S
 once you are done testing, **remember to shutdown the job!**
 
 *Note that this feature is in preview mode and is not production ready yet*
+
+## More resources
+
+Some useful resources on DCGAN:
+
+- [DCGAN slide](https://www.slideshare.net/enakai/dcgan-how-does-it-work)
+- [Paper explained](https://medium.com/@liyin_27935/dcgan-79af14a1c247)
+- [Quora GAN](https://www.quora.com/What-are-Generative-Adversarial-Networks-GANs)
+- [OpenAi GAN](https://blog.openai.com/generative-models/)
 
 ## Contributing
 
