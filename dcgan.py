@@ -77,8 +77,8 @@ class DCGAN(object):
                  imageSize=64,
                  nz=100,
                  ngf=64,
-                 cuda=False,
-                 ngpu=1,
+                 cuda=None,
+                 ngpu=None,
                  outf="/output"):
       """
       DCGAN - netG Builder

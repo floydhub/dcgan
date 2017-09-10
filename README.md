@@ -1,8 +1,10 @@
 # Deep Convolution Generative Adversarial Networks
 
-This project implements the paper [Unsupervised Representation Learning with Deep Convolutional Generative Adversarial Networks](http://arxiv.org/abs/1511.06434) and is a porting from [pytorch/examples/dcgan](https://github.com/pytorch/examples/tree/master/dcgan) to be usable on [FloydHub](https://www.floydhub.com/).
+This project implements the paper [Unsupervised Representation Learning with Deep Convolutional Generative Adversarial Networks](http://arxiv.org/abs/1511.06434) from a porting of [pytorch/examples/dcgan](https://github.com/pytorch/examples/tree/master/dcgan) making it usables on [FloydHub](https://www.floydhub.com/).
 
-The implementation is very close to the Torch implementation [dcgan.torch](https://github.com/soumith/dcgan.torch)
+The implementation is very close to the Torch implementation [dcgan.torch](https://github.com/soumith/dcgan.torch).
+
+Before start, the `fixed_noise.pth` (serialized Z vector used for generating image on training) is saved in the outf folder.
 
 After every 100 training iterations, the files `real_samples.png` and `fake_samples.png` are written to disk
 with the samples from the generative model.
@@ -50,13 +52,16 @@ optional arguments:
 Generating script:
 
 ```bash
-usage: generate.py [-h] --netG NETG [--outf OUTF] [--Zvector ZVECTOR]
+usage: generate.py [-h] --netG NETG [--outf OUTF] [--Zvector ZVECTOR] [--cuda]
+                   [--ngpu NGPU]
 
 optional arguments:
   -h, --help         show this help message and exit
   --netG NETG        path to netG (for generating images)
   --outf OUTF        folder to output images
-  --Zvector ZVECTOR  Path to Serialized Z vector
+  --Zvector ZVECTOR  path to Serialized Z vector
+  --cuda             enables cuda
+  --ngpu NGPU        number of GPUs to use
 ```
 
 
@@ -106,8 +111,10 @@ floyd run --gpu --env pytorch -data <REPLACE_WITH_JOB_OUTPUT_NAME> "python gener
 
 ### Try our pre-trained model
 
+We have provided to you a pre-trained model trained on the lfw-dataset for about 300 epochs.
+
 ```bash
-floyd run --gpu --env pytorch -data floydhub/dcgan/1/output:/model "python generator.py --netG /model/netG_epoch_99.pth"
+floyd run --gpu --env pytorch -data floydhub/dcgan/1/output:/model "python generator.py --netG /model/netG_epoch_299.pth --ngpu 1 --cuda"
 ```
 
 ### Serve model through REST API
