@@ -108,10 +108,10 @@ The training should take about 2h!!
 It's time to evaluate our model generating some images:
 
 ```bash
-floyd run --gpu --env pytorch -data <REPLACE_WITH_JOB_OUTPUT_NAME> "python generator.py --netG <REPLACE_WITH_MODEL_CHECKPOINT_PATH>"
+floyd run --gpu --env pytorch -data <REPLACE_WITH_JOB_OUTPUT_NAME> "python generator.py --netG <REPLACE_WITH_MODEL_CHECKPOINT_PATH> --ngpu 1 --cuda"
 
 # Provide a serialized Zvector
-floyd run --gpu --env pytorch -data <REPLACE_WITH_JOB_OUTPUT_NAME> "python generator.py --netG <REPLACE_WITH_MODEL_CHECKPOINT_PATH> --Zvector <REPLACE_WITH_SERIALIZED_Z_VECTOR_PATH>"
+floyd run --gpu --env pytorch -data <REPLACE_WITH_JOB_OUTPUT_NAME> "python generator.py --netG <REPLACE_WITH_MODEL_CHECKPOINT_PATH> --Zvector <REPLACE_WITH_SERIALIZED_Z_VECTOR_PATH> --ngpu 1 --cuda"
 ```
 
 ### Try our pre-trained model
