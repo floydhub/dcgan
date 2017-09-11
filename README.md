@@ -119,7 +119,7 @@ floyd run --gpu --env pytorch -data <REPLACE_WITH_JOB_OUTPUT_NAME>:/model "pytho
 We have provided to you a pre-trained model trained on the lfw-dataset for about 300 epochs.
 
 ```bash
-floyd run --gpu --env pytorch --data redeipirati/datasets/dcgan-100-epoch-models/3:/model "python generate.py --netG /model/netG_epoch_299.pth --ngpu 1 --cuda"
+floyd run --gpu --env pytorch --data redeipirati/datasets/dcgan-300-epochs-models/1:/model "python generate.py --netG /model/netG_epoch_299.pth --ngpu 1 --cuda"
 ```
 
 ### Serve model through REST API
@@ -159,7 +159,7 @@ Some useful resources on DCGAN:
 - [DCGAN slide](https://www.slideshare.net/enakai/dcgan-how-does-it-work)
 - [Paper explained](https://medium.com/@liyin_27935/dcgan-79af14a1c247)
 - [Quora GAN](https://www.quora.com/What-are-Generative-Adversarial-Networks-GANs)
-- [OpenAi GAN](https://blog.openai.com/generative-models/)
+- [OpenAI GAN](https://blog.openai.com/generative-models/)
 
 ## Contributing
 
