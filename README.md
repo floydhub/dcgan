@@ -15,7 +15,7 @@ After every epoch, models are saved to: `netG_epoch_%d.pth` and `netD_epoch_%d.p
 
 ## Downloading the LSUN dataset
 You can download the LSUN dataset by cloning [this repo](https://github.com/fyu/lsun) and running
-```
+```bash
 python download.py -c bedroom
 ```
 
@@ -80,7 +80,7 @@ Before you start, log in on FloydHub with the [floyd login](http://docs.floydhub
 the project:
 
 ```bash
-$ git clone https://github.com/floydhub/dcgan
+$ git clone https://github.com/ReDeiPirati/dcgan.git
 $ cd dcgan
 $ floyd init dcgan
 ```
@@ -98,7 +98,7 @@ Now it's time to run our training on FloydHub. In this example we will train the
 **Note**: If you want to mount/create a dataset look at the [docs](http://docs.floydhub.com/guides/basics/create_new/#create-a-new-dataset).
 
 ```bash
-$ floyd run --gpu --env pytorch --data floydhub/datasets/lfw/1:lfw "python main.py --dataset lfw --dataroot /lfw --outf /output --cuda --ngpu 1 --niter 100
+$ floyd run --gpu --env pytorch --data <USER>/datasets/lfw/<VERSION>:lfw "python main.py --dataset lfw --dataroot /lfw --outf /output --cuda --ngpu 1 --niter 100
 ```
 You can follow along the progress by using the [logs](http://docs.floydhub.com/commands/logs/) command.
 The training should take about 2h!!
@@ -108,10 +108,10 @@ The training should take about 2h!!
 It's time to evaluate our model generating some images:
 
 ```bash
-floyd run --gpu --env pytorch -data <REPLACE_WITH_JOB_OUTPUT_NAME> "python generator.py --netG <REPLACE_WITH_MODEL_CHECKPOINT_PATH> --ngpu 1 --cuda"
+floyd run --gpu --env pytorch --data <REPLACE_WITH_JOB_OUTPUT_NAME>:/model "python generate.py --netG /model/<REPLACE_WITH_MODEL_CHECKPOINT_PATH> --ngpu 1 --cuda"
 
 # Provide a serialized Zvector
-floyd run --gpu --env pytorch -data <REPLACE_WITH_JOB_OUTPUT_NAME> "python generator.py --netG <REPLACE_WITH_MODEL_CHECKPOINT_PATH> --Zvector <REPLACE_WITH_SERIALIZED_Z_VECTOR_PATH> --ngpu 1 --cuda"
+floyd run --gpu --env pytorch -data <REPLACE_WITH_JOB_OUTPUT_NAME>:/model "python generate.py --netG /model/<REPLACE_WITH_MODEL_CHECKPOINT_PATH> --Zvector <REPLACE_WITH_SERIALIZED_Z_VECTOR_PATH> --ngpu 1 --cuda"
 ```
 
 ### Try our pre-trained model
@@ -119,7 +119,7 @@ floyd run --gpu --env pytorch -data <REPLACE_WITH_JOB_OUTPUT_NAME> "python gener
 We have provided to you a pre-trained model trained on the lfw-dataset for about 300 epochs.
 
 ```bash
-floyd run --gpu --env pytorch -data floydhub/dcgan/1/output:/model "python generator.py --netG /model/netG_epoch_299.pth --ngpu 1 --cuda"
+floyd run --gpu --env pytorch --data redeipirati/datasets/dcgan-100-epoch-models/3:/model "python generate.py --netG /model/netG_epoch_299.pth --ngpu 1 --cuda"
 ```
 
 ### Serve model through REST API
@@ -130,7 +130,7 @@ with `--mode serve` flag, FloydHub will run the `app.py` file in your project
 and attach it to a dynamic service endpoint:
 
 ```bash
-floyd run --gpu --mode serve --env pytorch --data floydhub/dcgan/1/output:/model:model
+floyd run --gpu --mode serve --env pytorch --data <REPLACE_WITH_JOB_OUTPUT_NAME>
 ```
 
 The above command will print out a service endpoint for this job in your terminal console.
@@ -140,7 +140,7 @@ The service endpoint will take a couple minutes to become ready. Once it's up, y
 ```bash
 # e.g. of a GET req
 curl -X GET -o <NAME_&_PATH_DOWNLOADED_IMG> -F "ckp=<MODEL_CHECKPOINT>" <SERVICE_ENDPOINT>
-curl -X GET -o prova.png -F "ckp=netG_epoch_69.pth" https://www.floydhub.com/expose/hellllllllllllllo!!!!
+curl -X GET -o prova.png -F "ckp=netG_epoch_99.pth" https://www.floydhub.com/expose/hellllllllllllllo!!!!
 
 # e.g. of a POST req
 curl -X POST -o <NAME_&_PATH_DOWNLOADED_IMG> -F "file=@<ZVECTOR_SERIALIZED_PATH>" <SERVICE_ENDPOINT>

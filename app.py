@@ -2,12 +2,24 @@
 Flask Serving
 This file is a sample flask app that can be used to test your model with an REST API.
 This app does the following:
-    - Look for a Zvector and/or n_samples parameters
+    - Look for a Zvector(n_samples is encoded in this file) parameter
     - Returns the output file generated at /output
 Additional configuration:
     - You can also choose the checkpoint file name to use as a request parameter
-    - Parameter name: checkpoint
-    - It is loaded from /input
+    - Parameter name: ckp
+    - It is loaded from /model
+
+GET req:
+    paramrter:
+        - ckp, optional, load a specific chekcpoint from /model
+    no parameter:
+        - generate 1 image from random noise
+
+POST req:
+    parameter:
+        - file, required, a serialized Zvector file(the number of images to return is encoded in this vector)
+        - ckp, optional, load a specific chekcpoint from /model
+
 """
 import os
 import torch
