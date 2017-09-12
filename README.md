@@ -1,4 +1,4 @@
-# Deep Convolution Generative Adversarial Networks
+# Deep Convolutional Generative Adversarial Networks - DCGANs
 
 ![Generated images from noise on LFW ds after 300 epochs](images/lfw-300epochs.gif)
 

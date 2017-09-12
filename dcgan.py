@@ -13,6 +13,7 @@ import torch.utils.data
 import torchvision.transforms as transforms
 import torchvision.utils as vutils
 from torch.autograd import Variable
+from collections import OrderedDict # cpu_fix
 
 # Number of colours
 NC = 3
@@ -109,9 +110,8 @@ class DCGAN(object):
       NGF = int(ngf)
       # Load netG
       try:
-          torch.load(netG)
+          os.path.isfile(netG)
           self._netG = netG
-          pass
       except IOError as e:
           # Does not exist OR no read permissions
           print ("Unable to open netG file")
@@ -133,7 +133,13 @@ class DCGAN(object):
       # Build and load the model
       self._model = _netG(self._ngpu)
       self._model.apply(weights_init)
-      self._model.load_state_dict(torch.load(self._netG))
+      # Load Model ckp
+      if self._ngpu is not None and self._ngpu >= 1:
+        self._model.load_state_dict(torch.load(self._netG))
+      else:
+        # Load GPU model on CPU
+        self._model.load_state_dict(torch.load(self._netG, map_location=lambda storage, loc: storage))
+        self._model.cpu()
       # If provided use Zvector else create a random input normalized
       if self._zvector is not None:
         self._input = self._zvector

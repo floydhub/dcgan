@@ -60,8 +60,11 @@ def geneator_handler(path):
         zvector = torch.load(input_filepath)
         batchSize = zvector.size()[0]
 
-    checkpoint = request.form.get("ckp") or "netG_epoch_69.pth"
-    Generator = DCGAN(netG=os.path.join(MODEL_PATH, checkpoint), zvector=zvector, batchSize=batchSize)
+    checkpoint = request.form.get("ckp") or "netG_epoch_99.pth"
+    # GPU and cuda
+    # Generator = DCGAN(netG=os.path.join(MODEL_PATH, checkpoint), zvector=zvector, batchSize=batchSize, ngpu=1, cuda=True)
+    # CPU
+    Generator = DCGAN(netG=os.path.join(MODEL_PATH, checkpoint), zvector=zvector, batchSize=batchSize, ngpu=0)
     Generator.build_model()
     Generator.generate()
     return send_file(OUTPUT_PATH, mimetype='image/png')

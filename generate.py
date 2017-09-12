@@ -9,7 +9,7 @@ parser.add_argument('--netG', required=True, default='', help="path to netG (for
 parser.add_argument('--outf', default='/output', help='folder to output images')
 parser.add_argument('--Zvector', help="path to Serialized Z vector")
 parser.add_argument('--cuda', action='store_true', help='enables cuda')
-parser.add_argument('--ngpu', type=int, default=1, help='number of GPUs to use')
+parser.add_argument('--ngpu', type=int, default=0, help='number of GPUs to use')
 opt = parser.parse_args()
 print(opt)
 
