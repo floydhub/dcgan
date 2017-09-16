@@ -30,7 +30,7 @@ from dcgan import DCGAN
 
 ALLOWED_EXTENSIONS = set(['pth'])
 
-MODEL_PATH = '/model'
+MODEL_PATH = '/input'
 print('Loading model from path: %s' % MODEL_PATH)
 OUTPUT_PATH = "/output/generated.png"
 
@@ -61,10 +61,13 @@ def geneator_handler(path):
         batchSize = zvector.size()[0]
 
     checkpoint = request.form.get("ckp") or "netG_epoch_99.pth"
-    # GPU and cuda
-    Generator = DCGAN(netG=os.path.join(MODEL_PATH, checkpoint), zvector=zvector, batchSize=batchSize, ngpu=1, cuda=True)
-    # CPU
-    #Generator = DCGAN(netG=os.path.join(MODEL_PATH, checkpoint), zvector=zvector, batchSize=batchSize, ngpu=0)
+    # Check for cuda availability
+    if torch.cuda.is_available():
+        # GPU and cuda
+        Generator = DCGAN(netG=os.path.join(MODEL_PATH, checkpoint), zvector=zvector, batchSize=batchSize, ngpu=1, cuda=True)
+    else:
+        # CPU
+        Generator = DCGAN(netG=os.path.join(MODEL_PATH, checkpoint), zvector=zvector, batchSize=batchSize, ngpu=0)
     Generator.build_model()
     Generator.generate()
     return send_file(OUTPUT_PATH, mimetype='image/png')

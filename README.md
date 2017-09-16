@@ -129,7 +129,6 @@ you need to create a `floyd_requirements.txt` and declare the flask requirement 
 with `--mode serve` flag, FloydHub will run the `app.py` file in your project
 and attach it to a dynamic service endpoint:
 
-Note: If you want to serve the model on a CPU istance, comment this [line](https://github.com/ReDeiPirati/dcgan/blob/master/app.py#L65) and decomment [this other one](https://github.com/ReDeiPirati/dcgan/blob/master/app.py#L67).
 
 ```bash
 floyd run --gpu --mode serve --env pytorch --data <REPLACE_WITH_JOB_OUTPUT_NAME>
