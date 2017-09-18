@@ -98,7 +98,7 @@ Now it's time to run our training on FloydHub. In this example we will train the
 **Note**: If you want to mount/create a dataset look at the [docs](http://docs.floydhub.com/guides/basics/create_new/#create-a-new-dataset).
 
 ```bash
-$ floyd run --gpu --env pytorch --data <USER>/datasets/lfw/<VERSION>:lfw "python main.py --dataset lfw --dataroot /lfw --outf /output --cuda --ngpu 1 --niter 100
+$ floyd run --gpu --env pytorch --data redeipirati/datasets/lfw/1:lfw "python main.py --dataset lfw --dataroot /lfw --outf /output --cuda --ngpu 1 --niter 100
 ```
 You can follow along the progress by using the [logs](http://docs.floydhub.com/commands/logs/) command.
 The training should take about 2h!!
