@@ -98,7 +98,7 @@ Now it's time to run our training on FloydHub. In this example we will train the
 **Note**: If you want to mount/create a dataset look at the [docs](http://docs.floydhub.com/guides/basics/create_new/#create-a-new-dataset).
 
 ```bash
-$ floyd run --gpu --env pytorch --data <USER>/datasets/lfw/<VERSION>:lfw "python main.py --dataset lfw --dataroot /lfw --outf /output --cuda --ngpu 1 --niter 100
+$ floyd run --gpu --env pytorch-0.2  --data redeipirati/datasets/lfw/1:lfw "python main.py --dataset lfw --dataroot /lfw --outf /output --cuda --ngpu 1 --niter 100
 ```
 You can follow along the progress by using the [logs](http://docs.floydhub.com/commands/logs/) command.
 The training should take about 2h!!
@@ -108,10 +108,10 @@ The training should take about 2h!!
 It's time to evaluate our model generating some images:
 
 ```bash
-floyd run --gpu --env pytorch --data <REPLACE_WITH_JOB_OUTPUT_NAME>:/model "python generate.py --netG /model/<REPLACE_WITH_MODEL_CHECKPOINT_PATH> --ngpu 1 --cuda"
+floyd run --gpu --env pytorch-0.2  --data <REPLACE_WITH_JOB_OUTPUT_NAME>:/model "python generate.py --netG /model/<REPLACE_WITH_MODEL_CHECKPOINT_PATH> --ngpu 1 --cuda"
 
 # Provide a serialized Zvector
-floyd run --gpu --env pytorch -data <REPLACE_WITH_JOB_OUTPUT_NAME>:/model "python generate.py --netG /model/<REPLACE_WITH_MODEL_CHECKPOINT_PATH> --Zvector <REPLACE_WITH_SERIALIZED_Z_VECTOR_PATH> --ngpu 1 --cuda"
+floyd run --gpu --env pytorch-0.2  -data <REPLACE_WITH_JOB_OUTPUT_NAME>:/model "python generate.py --netG /model/<REPLACE_WITH_MODEL_CHECKPOINT_PATH> --Zvector <REPLACE_WITH_SERIALIZED_Z_VECTOR_PATH> --ngpu 1 --cuda"
 ```
 
 ### Try our pre-trained model
@@ -119,7 +119,7 @@ floyd run --gpu --env pytorch -data <REPLACE_WITH_JOB_OUTPUT_NAME>:/model "pytho
 We have provided to you a pre-trained model trained on the lfw-dataset for about 300 epochs.
 
 ```bash
-floyd run --gpu --env pytorch --data redeipirati/datasets/dcgan-300-epochs-models/1:/model "python generate.py --netG /model/netG_epoch_299.pth --ngpu 1 --cuda"
+floyd run --gpu --env pytorch-0.2  --data redeipirati/datasets/dcgan-300-epochs-models/1:/model "python generate.py --netG /model/netG_epoch_299.pth --ngpu 1 --cuda"
 ```
 
 ### Serve model through REST API
@@ -131,7 +131,7 @@ and attach it to a dynamic service endpoint:
 
 
 ```bash
-floyd run --gpu --mode serve --env pytorch --data <REPLACE_WITH_JOB_OUTPUT_NAME>
+floyd run --gpu --mode serve --env pytorch-0.2  --data <REPLACE_WITH_JOB_OUTPUT_NAME>
 ```
 
 The above command will print out a service endpoint for this job in your terminal console.
