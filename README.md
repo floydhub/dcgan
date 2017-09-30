@@ -161,6 +161,7 @@ Some useful resources on DCGAN:
 - [Paper explained](https://medium.com/@liyin_27935/dcgan-79af14a1c247)
 - [Quora GAN](https://www.quora.com/What-are-Generative-Adversarial-Networks-GANs)
 - [OpenAI GAN](https://blog.openai.com/generative-models/)
+- [Ian Goodfellow, Research Scientist OpenAI : Generative Adversarial Networks](https://youtu.be/HN9NRhm9waY)
 
 ## Contributing
 
