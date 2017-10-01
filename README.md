@@ -131,7 +131,7 @@ and attach it to a dynamic service endpoint:
 
 
 ```bash
-floyd run --gpu --mode serve --env pytorch-0.2  --data <REPLACE_WITH_JOB_OUTPUT_NAME>
+floyd run --gpu --mode serve --env pytorch-0.2  --data <REPLACE_WITH_JOB_OUTPUT_NAME>:input
 ```
 
 The above command will print out a service endpoint for this job in your terminal console.
