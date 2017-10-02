@@ -94,7 +94,7 @@ This project support the following datasets which were used in the paper:
 - [LFW](http://vis-www.cs.umass.edu/lfw/), available on FloydHub [here](https://www.floydhub.com/search/datasets?query=lfw)
 - Custom Image Dataset Folder, now it's your turn to make new experiments :)
 
-Now it's time to run our training on FloydHub. In this example we will train the model for 100 epochs with a gpu istance and with cuda enabled.
+Now it's time to run our training on FloydHub. In this example we will train the model for 100 epochs with a gpu instance and with cuda enabled.
 **Note**: If you want to mount/create a dataset look at the [docs](http://docs.floydhub.com/guides/basics/create_new/#create-a-new-dataset).
 
 ```bash
@@ -141,11 +141,11 @@ The service endpoint will take a couple minutes to become ready. Once it's up, y
 ```bash
 # e.g. of a GET req
 curl -X GET -o <NAME_&_PATH_DOWNLOADED_IMG> -F "ckp=<MODEL_CHECKPOINT>" <SERVICE_ENDPOINT>
-curl -X GET -o prova.png -F "ckp=netG_epoch_99.pth" https://www.floydhub.com/expose/hellllllllllllllo!!!!
+curl -X GET -o prova.png -F "ckp=netG_epoch_99.pth" https://www.floydhub.com/expose/BhZCFAKom6Z8RptVKskHZW
 
 # e.g. of a POST req
 curl -X POST -o <NAME_&_PATH_DOWNLOADED_IMG> -F "file=@<ZVECTOR_SERIALIZED_PATH>" <SERVICE_ENDPOINT>
-curl -X POST -o prova.png -F "file=@./parameter/zvector.pth" https://www.floydhub.com/expose/hellllllllllllllo!!!!
+curl -X POST -o prova.png -F "file=@./parameter/zvector.pth" https://www.floydhub.com/expose/BhZCFAKom6Z8RptVKskHZW
 ```
 
 Any job running in serving mode will stay up until it reaches maximum runtime. So
