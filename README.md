@@ -80,7 +80,7 @@ Before you start, log in on FloydHub with the [floyd login](http://docs.floydhub
 the project:
 
 ```bash
-$ git clone https://github.com/ReDeiPirati/dcgan.git
+$ git clone https://github.com/floydhub/dcgan.git
 $ cd dcgan
 $ floyd init dcgan
 ```
