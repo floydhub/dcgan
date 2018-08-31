@@ -32,13 +32,13 @@ ALLOWED_EXTENSIONS = set(['pth'])
 
 MODEL_PATH = '/input'
 print('Loading model from path: %s' % MODEL_PATH)
-OUTPUT_PATH = "/output/generated.png"
+OUTPUT_PATH = "generated.png"
 
 app = Flask('DCGAN-Generator')
 
 #  2 possible parameters - checkpoint, zinput(file.cpth)
 # Return an Image
-@app.route('/<path:path>', methods=['GET', 'POST'])
+@app.route('/', methods=['GET', 'POST'])
 def geneator_handler(path):
     zvector = None
     batchSize = 1
@@ -54,7 +54,7 @@ def geneator_handler(path):
         if not allowed_file(file.filename):
             return BadRequest("Invalid file type")
         filename = secure_filename(file.filename)
-        input_filepath = os.path.join('/output', filename)
+        input_filepath = os.path.join('./', filename)
         file.save(input_filepath)
         # Load a Z vector and Retrieve the N of samples to generate
         zvector = torch.load(input_filepath)

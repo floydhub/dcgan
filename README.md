@@ -97,7 +97,7 @@ Now it's time to run our training on FloydHub. In this example we will train the
 **Note**: If you want to mount/create a dataset look at the [docs](http://docs.floydhub.com/guides/basics/create_new/#create-a-new-dataset).
 
 ```bash
-$ floyd run --gpu --env pytorch-0.2  --data redeipirati/datasets/lfw/1:lfw "python main.py --dataset lfw --dataroot /lfw --outf /output --cuda --ngpu 1 --niter 100
+$ floyd run --gpu --env pytorch-0.2  --data redeipirati/datasets/lfw/1:lfw "python main.py --dataset lfw --dataroot /lfw --outf trained-models --cuda --ngpu 1 --niter 100
 ```
 You can follow along the progress by using the [logs](http://docs.floydhub.com/commands/logs/) command.
 The training should take about 2h!!
@@ -107,10 +107,10 @@ The training should take about 2h!!
 It's time to evaluate our model generating some images:
 
 ```bash
-floyd run --gpu --env pytorch-0.2  --data <REPLACE_WITH_JOB_OUTPUT_NAME>:/model "python generate.py --netG /model/<REPLACE_WITH_MODEL_CHECKPOINT_PATH> --ngpu 1 --cuda"
+floyd run --gpu --env pytorch-0.2  --data <REPLACE_WITH_JOB_OUTPUT_NAME>:/model "python generate.py --netG /model/trained-models/<REPLACE_WITH_MODEL_CHECKPOINT_PATH> --ngpu 1 --cuda"
 
 # Provide a serialized Zvector
-floyd run --gpu --env pytorch-0.2  -data <REPLACE_WITH_JOB_OUTPUT_NAME>:/model "python generate.py --netG /model/<REPLACE_WITH_MODEL_CHECKPOINT_PATH> --Zvector <REPLACE_WITH_SERIALIZED_Z_VECTOR_PATH> --ngpu 1 --cuda"
+floyd run --gpu --env pytorch-0.2  -data <REPLACE_WITH_JOB_OUTPUT_NAME>:/model "python generate.py --netG /model/trained-models/<REPLACE_WITH_MODEL_CHECKPOINT_PATH> --Zvector <REPLACE_WITH_SERIALIZED_Z_VECTOR_PATH> --ngpu 1 --cuda"
 ```
 
 ### Try our pre-trained model
@@ -123,14 +123,12 @@ floyd run --gpu --env pytorch-0.2  --data redeipirati/datasets/dcgan-300-epochs-
 
 ### Serve model through REST API
 
-FloydHub supports seving mode for demo and testing purpose. Before serving your model through REST API,
-you need to create a `floyd_requirements.txt` and declare the flask requirement in it. If you run a job
-with `--mode serve` flag, FloydHub will run the `app.py` file in your project
+If you run a job with `--mode serve` flag, FloydHub will run the `app.py` file in your project
 and attach it to a dynamic service endpoint:
 
 
 ```bash
-floyd run --gpu --mode serve --env pytorch-0.2  --data <REPLACE_WITH_JOB_OUTPUT_NAME>:input
+floyd run --gpu --mode serve --env pytorch-0.3  --data <REPLACE_WITH_JOB_OUTPUT_NAME>:input
 ```
 
 The above command will print out a service endpoint for this job in your terminal console.
@@ -140,17 +138,15 @@ The service endpoint will take a couple minutes to become ready. Once it's up, y
 ```bash
 # e.g. of a GET req
 curl -X GET -o <NAME_&_PATH_DOWNLOADED_IMG> -F "ckp=<MODEL_CHECKPOINT>" <SERVICE_ENDPOINT>
-curl -X GET -o prova.png -F "ckp=netG_epoch_99.pth" https://www.floydhub.com/expose/BhZCFAKom6Z8RptVKskHZW
+curl -X GET -o prova.png -F "ckp=netG_epoch_99.pth" https://www.floydlabs.com/serve/redeipirati/projects/dcgan
 
 # e.g. of a POST req
 curl -X POST -o <NAME_&_PATH_DOWNLOADED_IMG> -F "file=@<ZVECTOR_SERIALIZED_PATH>" <SERVICE_ENDPOINT>
-curl -X POST -o prova.png -F "file=@./parameter/zvector.pth" https://www.floydhub.com/expose/BhZCFAKom6Z8RptVKskHZW
+curl -X POST -o prova.png -F "file=@./parameter/zvector.pth" https://www.floydlabs.com/serve/redeipirati/projects/dcgan
 ```
 
 Any job running in serving mode will stay up until it reaches maximum runtime. So
 once you are done testing, **remember to shutdown the job!**
-
-*Note that this feature is in preview mode and is not production ready yet*
 
 ## More resources
 
