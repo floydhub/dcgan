@@ -34,16 +34,18 @@ MODEL_PATH = '/input'
 print('Loading model from path: %s' % MODEL_PATH)
 OUTPUT_PATH = "generated.png"
 
-app = Flask('DCGAN-Generator')
+app = Flask(__name__)
 
 #  2 possible parameters - checkpoint, zinput(file.cpth)
 # Return an Image
 @app.route('/', methods=['GET', 'POST'])
-def geneator_handler(path):
+def geneator_handler():
+    print('start request!')
     zvector = None
     batchSize = 1
     # Upload a serialized Zvector
     if request.method == 'POST':
+        print('POST!')
         # DO things
         # check if the post request has the file part
         if 'file' not in request.files:
@@ -54,20 +56,20 @@ def geneator_handler(path):
         if not allowed_file(file.filename):
             return BadRequest("Invalid file type")
         filename = secure_filename(file.filename)
-        input_filepath = os.path.join('./', filename)
-        file.save(input_filepath)
+        # input_filepath = os.path.join('./', filename)
+        file.save(filename)
         # Load a Z vector and Retrieve the N of samples to generate
-        zvector = torch.load(input_filepath)
+        zvector = torch.load(filename)
         batchSize = zvector.size()[0]
 
     checkpoint = request.form.get("ckp") or "netG_epoch_99.pth"
     # Check for cuda availability
     if torch.cuda.is_available():
         # GPU and cuda
-        Generator = DCGAN(netG=os.path.join(MODEL_PATH, checkpoint), zvector=zvector, batchSize=batchSize, ngpu=1, cuda=True)
+        Generator = DCGAN(netG=os.path.join(MODEL_PATH, checkpoint), zvector=zvector, batchSize=batchSize, ngpu=1, cuda=True, outf="./")
     else:
         # CPU
-        Generator = DCGAN(netG=os.path.join(MODEL_PATH, checkpoint), zvector=zvector, batchSize=batchSize, ngpu=0)
+        Generator = DCGAN(netG=os.path.join(MODEL_PATH, checkpoint), zvector=zvector, batchSize=batchSize, ngpu=0, outf="./")
     Generator.build_model()
     Generator.generate()
     return send_file(OUTPUT_PATH, mimetype='image/png')
@@ -77,5 +79,5 @@ def allowed_file(filename):
     return '.' in filename and \
         filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-if __name__ == '__main__':
-    app.run(host='0.0.0.0')
+if __name__ == "__main__":
+    app.run(host='0.0.0.0', threaded=False)
